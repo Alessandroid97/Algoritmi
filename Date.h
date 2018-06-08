@@ -14,11 +14,11 @@ class Date {
 public:
 
     Date();
-    Date(int d, int m, int y);
     Date(const Date & to_copy);
 
     bool stringToDate(string);                            //'Trasforma' la stringa passata da parametro in un oggetto data
 
+    void setAll(int d, int m, int y);
 
     int year() const;
     int month() const;

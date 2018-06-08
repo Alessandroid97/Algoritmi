@@ -5,6 +5,7 @@
 #include "date.h"
 #include <iostream>
 #include <ctime>
+#include <string>
 using namespace std;
 
 
@@ -18,8 +19,7 @@ Date::Date()
     _month=timeinfo->tm_mon+1;
     _year=timeinfo->tm_year+1900;
 }
-Date::Date(int d, int m, int y)
-{
+void Date::setAll(int d, int m, int y) {
     _day=d;
     _month=m;
     _year=y;
@@ -35,31 +35,26 @@ bool Date::stringToDate(const string d_str) {
     string number;
     int d, m, y;
     if(d_str[2]=='/' && d_str[5]=='/') {
-        number[0] = d_str[0];
-        number[1] = d_str[1];
+        number=d_str.substr(0,2);
         d = stoi(number);
-        number[0] = d_str[3];
-        number[1] = d_str[4];
+        number=d_str.substr(3,2);
         m = stoi(number);
-        number[0] = d_str[6];
-        number[1] = d_str[7];
-        number[2] = d_str[8];
-        number[3] = d_str[9];
+        number=d_str.substr(6,4);
         y = stoi(number);
         if (m == 1 || m == 3 || m == 5 || m == 7 || m == 8 || m == 10 || m == 12) {
             if (d <= 31 && d >= 1 && y >= 0) {
-                ;
+                setAll(d,m,y);
                 return true;
             }else{return false;}
         }else{
             if (m == 4 || m == 6 || m == 9 || m == 11) {
                 if (d <= 30 && d >= 1 && y >= 0) {
-                    Date(d,m,y);
+                    setAll(d,m,y);
                     return true;
                 }else{return false;}
             }else{
                 if(m==2 && d<=29 && d>=1 && y>0){
-                    Date(d,m,y);
+                    setAll(d,m,y);
                     return true;
                 }else{return false;}
             }
@@ -151,6 +146,8 @@ bool operator == (Date d1,Date d2)
     }
     return false;
 }
+
+
 
 
 
