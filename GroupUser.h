@@ -12,6 +12,7 @@ public:
 
     virtual void printInfo() const;                 //Funzioni virtuali, overloading delle pure virtual nella classe base.
     virtual string printOnFile() const;
+    virtual int getNumberRelations(const string&) const;
 
     void setRegisteredOffice(string);               //Setters delle variabili.
     void setActivityKind(string);

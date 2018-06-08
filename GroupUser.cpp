@@ -51,4 +51,11 @@ string GroupUser::printOnFile() const {
             + ",tipo_attività:" + getActivityKind() + "}";
 }
 
+int GroupUser::getNumberRelations(const string &type) const {
+    if(type == "membri") return _member_number;
+    else return -1;
+}
+
+
+
 

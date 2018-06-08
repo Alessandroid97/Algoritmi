@@ -59,6 +59,8 @@ string CompanyUser::printOnFile() const   /*Overloading funzione pure virtual de
 
 int CompanyUser::getNumberRelations(const string &type) const {
     if(type=="consociati") return getSubsidiaries();
-    if(type=="diretti") return getEmployee();
-    if(type=="tutti") return getEmployee() + getSubsidiaries();
+    else if(type=="diretti") return getEmployee();
+         else if(type=="tutti") return getEmployee() + getSubsidiaries();
+              else return -1;
 }
+

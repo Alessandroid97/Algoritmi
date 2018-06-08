@@ -8,15 +8,13 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm>
-#include <iterator>
 #include "Date.h"
 #include "GroupUser.h"
 
 using namespace std;
 
 typedef struct relationsStruct{
-    GeneralUser **ptr;                   //SOLO UNA PRIMA IDEA - Puntatore a un puntatore, punta al puntatore del
+    GeneralUser *ptr;                   //SOLO UNA PRIMA IDEA - Puntatore a un puntatore, punta al puntatore del
                                          //vector _users_vector che a sua volta punta all'oggetto.
     string link;                         //Indica il tipo di relazione.
 }relationsStruct;
@@ -25,21 +23,25 @@ class Graph {
 public:
     Graph() ;
 
+    bool readFileRelations(const string);
+
     template <typename T>                           //T indica il tipo di uno dei 3 possibili utenti.
     void setUser(T&);                               //Aggiunge al vector l'oggetto passato come parametro.
 
+    void removeUser(const string&);                 //Rimuove un utente dal vector _users_vector (l'ID è passato da parametro)
+
     bool setRelation(string&, string&, string&);     //Aggiunge la relazione fra 2 oggetti , vengono passati come parametri
                                                      //gli identificativi univoci dei 2 oggetti interessati e il tipo di relazione.
+    bool removeRelation(const string&, const string&);     //Rimuove la relazione fra 2 utenti.
 
     GeneralUser* getUser(const string&) const;              //Restituisce l'oggetto relativo all'identificativo passato come parametro.
 
     long numberOfUsers(const string&) const;               //Restituisce il numero totale degli utenti del tipo specificato
                                                      //come parametro("tutti","semplice","azienda","gruppo").
     unsigned long nUsersAfterDate(const Date&) const;               //Restituisce il numero di utenti nati dopo una certa data passata come parametro.
-    string companyMoreEmployees(const string&) const;               //Restituisce il nome dell'azienda con maggior numero di dipendenti diretti/totali e il numero
-                                                     //in questione. Diretti/totali viene specificato come parametro.
-    void userMoreRelations(string) const;                //Stampa l'utente con il maggior numero di amici/conoscenze(spec. da parametro)
-                                                    //e il relativo numero.
+
+    string userMoreRelations(const short&, const string&) const;           //Stampa l'utente con il maggior numero di relazioni(spec. da parametro)
+                                                             //il tipo dell'utente è mandato come parametro(1-2-3).
     float averageAgeSimpleUsers() const;            //Restituisce l'età media degli utenti semplici.
 
 private:

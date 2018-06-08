@@ -71,6 +71,7 @@ bool Date::_isValid() const
     }
     return false;
 }
+
 int Date::year() const
 {
     return _year;
