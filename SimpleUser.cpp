@@ -60,10 +60,16 @@ bool SimpleUser::setSurname(const string &surname) {
 
 //Print
 void SimpleUser::printInfo() const {
-
+    cout<<endl<<"Nome utente: "<<getID()
+        <<endl<<"Nome: "<<getName()
+        <<endl<<"Cognome: "<<getSurname()
+        <<endl<<"Data di nascita: " << getBirth().str()
+        <<endl<<"Indirizzo di domicilio: " << getAddress();
 }
-string SimpleUser::printOnFile() const {
 
+string SimpleUser::printOnFile() const {
+    cout<<getID() + "," "utente semplice" + "," + "Nome:" + getName() + "," + "Cognome:" + getSurname()
+       + "," + "Data di nascita:" + getBirth().str() + "," + "Indirizzo di domicilio: " + getAddress() <<endl;
 }
 
 //Private Methods
