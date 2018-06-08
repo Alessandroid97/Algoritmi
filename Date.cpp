@@ -31,7 +31,7 @@ Date::Date(const Date &to_copy)
     _year=to_copy._year;
 }
 
-bool Date::stringToDate(const string d_str) {
+bool Date::stringToDate(const string& d_str) {
     string number;
     int d, m, y;
     if(d_str[2]=='/' && d_str[5]=='/') {

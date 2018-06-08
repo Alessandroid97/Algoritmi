@@ -1,6 +1,5 @@
-//
 // Created by Nicola on 05/06/2018.
-//
+
 
 #ifndef PROGETTO_COMPANY_H
 #define PROGETTO_COMPANY_H
@@ -29,11 +28,12 @@ public:
     string getProductType() const;
     int getSubsidiaries() const;
     int getEmployee() const;
+
     virtual int getNumberRelations(const string&) const;
-
     virtual string printOnFile() const;
+    virtual void printInfo() const;
 
-    private:
+private:
     string _tax_office_adress;
     string _operational_headquarters_adress;
     string _product_type;

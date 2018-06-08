@@ -1,9 +1,8 @@
-//
-// Created by Nicola on 19/04/2018.
-//
 
-#ifndef LAB5_ES1_DATE_H
-#define LAB5_ES1_DATE_H
+// Created by Nicola on 19/04/2018.
+
+#ifndef DATE_H
+#define DATE_H
 
 #include <iostream>
 #include <string>
@@ -16,7 +15,7 @@ public:
     Date();
     Date(const Date & to_copy);
 
-    bool stringToDate(string);                            //'Trasforma' la stringa passata da parametro in un oggetto data
+    bool stringToDate(const string& );                            //'Trasforma' la stringa passata da parametro in un oggetto data
 
     void setAll(int d, int m, int y);
 
@@ -41,4 +40,4 @@ private:
 };
 
 
-#endif //LAB5_ES1_DATE_H
+#endif //DATE_H
