@@ -5,7 +5,9 @@
 #define SIMPLEUSER_H
 
 #include "iostream"
-#define MAX 30
+#include "GeneralUser.h"
+
+#define MAX_STRING 30
 
 using namespace std;
 
@@ -19,9 +21,9 @@ public:
     void increaseFriends();
     void increaseKnown();
 
-    string getNome() const;
-    string getCognome() const;
-    string getDomicilio() const;
+    string getName() const;
+    string getSurname() const;
+    string getAddress() const;
     int getNRelatives() const;
     int getNKnown() const;
     int getNFriends() const;
@@ -31,6 +33,8 @@ public:
     virtual void printInfo() const;
 
 private:
+    bool checkAlpha(const string& );
+
     string _name;
     string _surname;
     string _address;

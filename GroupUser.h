@@ -1,9 +1,7 @@
-//
 // Created by aless on 05/06/2018.
-//
 
-#ifndef PROGETTOALGORITMI2018_GROUPUSER_H
-#define PROGETTOALGORITMI2018_GROUPUSER_H
+#ifndef GROUPUSER_H
+#define GROUPUSER_H
 
 
 #include "GeneralUser.h"
@@ -31,4 +29,4 @@ private:
 };
 
 
-#endif //PROGETTOALGORITMI2018_GROUPUSER_H
+#endif //GROUPUSER_H

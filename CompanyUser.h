@@ -1,8 +1,8 @@
 // Created by Nicola on 05/06/2018.
 
 
-#ifndef PROGETTO_COMPANY_H
-#define PROGETTO_COMPANY_H
+#ifndef COMPANY_H
+#define COMPANY_H
 
 #include <iostream>
 #include <string>
@@ -13,22 +13,21 @@ using namespace std;
 
 class CompanyUser:public GeneralUser {
 public:
-                                            /*Costruttore*/
+
     CompanyUser();
-                                            /*Setters*/
+    //Setters
     void setTaxOffice(string);
     void setOperationalHeadquarters(string);
     void setProductType(string);
     void setIncrementSubsidiaries();
     void setIncrementEmployee();
-
-                                                 /*Getters*/
+    //Getters
     string getTaxOfficeAdress() const;
     string getOperationaHeadquartersAdress() const;
     string getProductType() const;
     int getSubsidiaries() const;
     int getEmployee() const;
-
+    //Virtual
     virtual int getNumberRelations(const string&) const;
     virtual string printOnFile() const;
     virtual void printInfo() const;

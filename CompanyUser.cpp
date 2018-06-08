@@ -1,14 +1,12 @@
-//
 // Created by Nicola on 05/06/2018.
-//
 
 #include "CompanyUser.h"
-/*Costruttore*/
+//Costruttore
 CompanyUser::CompanyUser() {
     _number_of_employee=0;
     _number_of_subsidiaries=0;
 }
-/*Setters*/
+//Setters
 void CompanyUser::setTaxOffice(string adress)
 {
     _tax_office_adress=adress;
@@ -29,7 +27,7 @@ void CompanyUser::setIncrementSubsidiaries()
 {
     _number_of_subsidiaries++;
 }
-/*Getters*/
+//Getters
 string CompanyUser::getTaxOfficeAdress() const
 {
     return _tax_office_adress;
