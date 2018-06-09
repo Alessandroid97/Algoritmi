@@ -13,24 +13,27 @@ using namespace std;
 
 class CompanyUser:public GeneralUser {
 public:
-
     CompanyUser();
+
     //Setters
-    void setTaxOffice(string);
-    void setOperationalHeadquarters(string);
-    void setProductType(string);
+    bool setTaxOffice(string);
+    bool setOperationalHeadquarters(string);
+    bool setProductType(string);
     void setIncrementSubsidiaries();
     void setIncrementEmployee();
+
     //Getters
     string getTaxOfficeAdress() const;
     string getOperationaHeadquartersAdress() const;
     string getProductType() const;
     int getSubsidiaries() const;
     int getEmployee() const;
+
     //Virtual
     virtual int getNumberRelations(const string&) const;
     virtual string printOnFile() const;
     virtual void printInfo() const;
+    virtual bool setInformations(const string&, const string&);
 
 private:
     string _tax_office_adress;

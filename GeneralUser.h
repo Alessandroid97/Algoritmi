@@ -15,6 +15,8 @@ public:
     virtual void printInfo() const =0;                          //Stampa le informazioni dell'utente a schermo. Pure Virtual
     virtual int getNumberRelations(const string&) const =0;     //Da definire in ogni diversa tipologia di utente, restituisce il numero
                                                                 //del tipo di relazioni specificato come parametro(es: amici, conoscenti, dipendenti,componenti ...).
+    virtual bool setInformations(const string&, const string&) =0;
+
     bool setID(const string& );
     bool setBirth(const string& );                //Setters.
     bool setType(const short& );

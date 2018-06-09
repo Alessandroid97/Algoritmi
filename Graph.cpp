@@ -23,7 +23,6 @@ bool Graph::readFileRelations(const string name_file) {
     file.open(name_file);
 
     if(!file.is_open()){
-        cerr<<"\r\nERRORE: il file relazioni non può essere aperto. Controllare se il nome inserito è corretto.";
         return false;
     }else{
         while(getline(file, line)){
@@ -38,7 +37,6 @@ bool Graph::readFileRelations(const string name_file) {
             if(setRelation(id1, id2, relation)){
             }
             else {
-                cerr<<"\r\nERRORE: è presente un errore nel formato del file. Impossibile leggerlo correttamente.";
                 return false;
             }
         }
@@ -90,9 +88,16 @@ bool Graph::setRelation(string & fromID, string &toID, string &rel) {
                     invertRelation(from, to, rel, inv_rel );
                     return true;
                 } else {
-                    if (rel == "coniuge" || rel == "amico" || rel == "conoscente") {
+                    if (rel == "coniuge" || rel == "amico") {
                         invertRelation(from, to, rel, rel);
                         return true;
+                    } else{
+                        if(rel == "conoscente" || rel == "membro" || rel == "dipendente"){
+                            _temporary_rel.link = rel;
+                            _temporary_rel.ptr = _users_vector[to];
+                            _relations[from].insert(_relations[from].begin(), _temporary_rel);
+                            return true;
+                        }
                     }
                 }
             }

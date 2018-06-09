@@ -31,6 +31,7 @@ public:
     virtual int getNumberRelations(const string&) const;
     virtual string printOnFile() const;
     virtual void printInfo() const;
+    virtual bool setInformations(const string&, const string&);
 
 private:
     bool checkAlpha(const string& );

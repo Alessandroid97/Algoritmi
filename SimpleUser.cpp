@@ -80,3 +80,19 @@ bool SimpleUser::checkAlpha(const string & str) {
     }
     return true;
 }
+
+bool SimpleUser::setInformations(const string & info, const string & val) {
+    if (info == "nome") {
+        return setName(val);
+    } else {
+        if (info == "cognome") {
+            return setSurname(val);
+        } else {
+            if(info == "residenza"){
+                return setAddress(val);
+            }
+        }
+    }
+    return false;
+
+}
