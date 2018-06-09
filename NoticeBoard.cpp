@@ -10,6 +10,7 @@
 #include "Date.h"
 using namespace std;
 
+//Il costruttore inizializza un post fittizio ai valori di controllo
 NoticeBoard::NoticeBoard()
 {
     _post._text="Empty";
@@ -17,6 +18,8 @@ NoticeBoard::NoticeBoard()
     _post._dislike=0;
     _postnumber=0;
 }
+
+//Setters
 void NoticeBoard::setText(string text)
 {
     _post._text=text;
@@ -35,6 +38,8 @@ void NoticeBoard::setDislike(string id)
     _post._userdislike[_post._dislike]=id;
     _post._dislike++;
 }
+
+//Getters
 string NoticeBoard::getText()
 {
     return _post._text;
@@ -59,22 +64,178 @@ void NoticeBoard::getDislike()
         cout<<_post._userdislike[i]<<endl;
     }
 }
-void NoticeBoard::savepost()
+
+//Interazione like degli utenti verso un post selezionato
+bool NoticeBoard::insertremoveLike(const string id,const int n,const int c)
 {
-    _board.insert(_board.begin(),_post);
-    _postnumber++;
+    bool k=false;
+    if(c==1)                       //Se c=1 allora inserisco un like
+    {
+        for (long i = 0; i < _board[n]._dislike; i++) //Constrollo se l'utente aveva messo dislike
+        {                                             //al post selezionato
+            if (_board[n]._userdislike[i] == id)
+            {
+                _board[n]._userdislike[i].erase();
+                _board[n]._dislike--;
+            }
+        }
+        for (long i = 0; i < _board[n]._like; i++)    //Controllo se l'utente aveva messo like
+        {                                             //al post selezionato
+            if (_board[n]._userlike[i] == id)
+            {
+                k=true;
+            }
+        }
+        if(!k)                                        //Se k falso aggiungo il like
+        {
+            _board[n]._like++;
+            _board[n]._userlike.push_back(id);
+            cout<<"Mi piace aggiunto con successo"<<endl;
+            return true;
+        }
+        else                                          //Altrimenti segnalo la presenza
+        {
+            cerr<<"Hai già messo mi piace a questo post"<<endl;
+            return false;
+        }
+    }
+    else if(c==2)                    //Se c=2 elimino un like
+    {
+        for (long i = 0; i < _board[n]._like; i++)                //Controllo dove potrebbe essere
+        {                                                         //il like
+            if (_board[n]._userlike[i] == id) {
+                _board[n]._userlike[i].erase();
+                _board[n]._like--;
+                i = _board[n]._like + 1;
+                k = true;
+            }
+        }
+        if (k)
+        {
+            cout << "Mi piace rimosso con successo" << endl;
+            return true;
+        } else {
+            cerr << "L'utente selezionato non ha il tuo mi piace" << endl;
+            return false;
+        }
+    }
+    else
+    {
+        cerr<<"Errore: comando non riconosciuto"<<endl;
+        return false;
+    }
 }
-void NoticeBoard::searchpost(int i)
+
+//Interazione dislike degli utenti verso un post selezionato
+bool NoticeBoard::insertremoveDislike(const string id,const int n,const int c)
+{
+    bool k=false;
+    if(c==1)                    //Se c=1 Aggiungo dislike
+    {
+        for (long i = 0; i < _board[n]._like; i++)
+        {
+            if (_board[n]._userlike[i] == id)
+            {
+                _board[n]._userlike[i].erase();
+                _board[n]._like--;
+            }
+        }
+        for (long i = 0; i < _board[n]._dislike; i++)
+        {
+            if (_board[n]._userdislike[i] == id)
+            {
+                k=true;
+            }
+        }
+        if(k)
+        {
+            _board[n]._dislike++;
+            _board[n]._userdislike.push_back(id);
+            cout<<"Non mi piace aggiunto con successo"<<endl;
+            return true;
+        }
+        else
+        {
+            cerr<<"Hai già messo non mi piace a questo post"<<endl;
+            return false;
+        }
+    }
+    else if(c==2)                           //Se c=2 rimuovo dislike
+    {
+        for (long i = 0; i < _board[n]._dislike; i++) {
+            if (_board[n]._userdislike[i] == id) {
+                _board[n]._userdislike[i].erase();
+                _board[n]._dislike--;
+                i = _board[n]._dislike + 1;
+                k = true;
+            }
+        }
+        if (k) {
+            cout << "Mi piace rimosso con successo" << endl;
+            return true;
+        } else {
+            cerr << "L'utente selezionato non ha il tuo mi piace" << endl;
+            return false;
+        }
+    }
+}
+//Salvo il post sotto lavorazione e resetto post per uno nuovo;
+bool NoticeBoard::savepost()
+{
+    NoticeBoard post;
+    if(_post._text!="Empty")
+    {
+        _board.insert(_board.begin(), _post);
+        _postnumber++;
+        _post=post._post;
+        return true;
+    } else
+    {
+        cerr<<"Post non valido, impossibile salvare"<<endl;
+        _post=post._post;
+        return false;
+    }
+}
+//Creazione nuovo post
+bool NoticeBoard::insertPost(const string id,const string text)
+{
+    _post._id=id;
+    _post._text=text;
+    _post._date=Date();
+    if(savepost())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+bool NoticeBoard::modifypost(const string id,const string text, postStruct &post)
+{
+     if(post._id==id)
+     {
+         post._text=text;
+         return true;
+     } else
+     {
+         return false;
+     }
+}
+//Cerca e seleziona post
+postStruct NoticeBoard::searchpost(int i)
 {
     i--;
     if(i<=_postnumber) {
-        _post = _board[i];
         cout<<"Post selezionato correttamente"<<endl;
+        return _board[i];
     } else
     {
         cerr<<"Numero post inserito non valido"<<endl;
     }
 }
+
+
 int NoticeBoard::printpart(int j)
 {
     int i;
@@ -87,6 +248,8 @@ int NoticeBoard::printpart(int j)
     }
     return i;
 }
+
+
 void NoticeBoard::printall()
 {
     for(int i=0;i<_postnumber;i++)
@@ -97,19 +260,20 @@ void NoticeBoard::printall()
             _post._like<<"\nDislike: "<<_post._dislike<<endl;
     }
 }
+
+//Carico bacheca da file
 bool NoticeBoard::pickupfromFile(string filename)
 {
-    ifstream file(filename);
-    if(file.is_open())
+    ifstream file(filename);                      //Apro il file
+    if(file.is_open())                            //Controllo che sia aperto
     {
         string text;
-        Date date;
-        int i=0,v=0,like=0,dislike=0;
+        int i=0,v=0;
         char c;
-        while(!file.eof())
+        while(!file.eof())                        //Lo leggo
         {
             file>>c;
-            if(c!=','&&i<=100)
+            if(c!=','&&i<=100)                    //Controllo virgole e caratteri di lunghezza massima
             {
                 text[i]=c;
                 i++;
@@ -121,8 +285,8 @@ bool NoticeBoard::pickupfromFile(string filename)
             }
             else
             {
-                if(v==0)
-                {
+                if(v==0)                    //Utilizzo v come contatore per i campi del file
+                {                           //v=0 per id,1 per testo,2 per data,3 like,4 dislike
                     _post._id=text;
                     text.erase();
                     i=0;
@@ -137,7 +301,7 @@ bool NoticeBoard::pickupfromFile(string filename)
                 }
                 else if(v==2)
                 {
-                    //_post._date.funzione(text);
+                    _post._date.stringToDate(text);
                     text.erase();
                     i=0;
                     v++;
@@ -217,6 +381,8 @@ bool NoticeBoard::pickupfromFile(string filename)
         return false;
     }
 }
+
+//Stampo su file
 void NoticeBoard::printFile(string filename)
 {
     ofstream file(filename);
@@ -253,3 +419,4 @@ void NoticeBoard::printFile(string filename)
         cerr<<"Errore nella stampa del file"<<endl;
     }
 }
+
