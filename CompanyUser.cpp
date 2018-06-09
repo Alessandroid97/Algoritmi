@@ -7,17 +7,20 @@ CompanyUser::CompanyUser() {
     _number_of_subsidiaries=0;
 }
 //Setters
-void CompanyUser::setTaxOffice(string adress)
+bool CompanyUser::setTaxOffice(string adress)
 {
     _tax_office_adress=adress;
+    return true;
 }
-void CompanyUser::setOperationalHeadquarters(string adress)
+bool CompanyUser::setOperationalHeadquarters(string adress)
 {
     _operational_headquarters_adress=adress;
+    return true;
 }
-void CompanyUser::setProductType(string section)
+bool CompanyUser::setProductType(string section)
 {
     _product_type=section;
+    return true;
 }
 void CompanyUser::setIncrementEmployee()
 {
@@ -64,3 +67,17 @@ int CompanyUser::getNumberRelations(const string &type) const {
               else return -1;
 }
 
+bool CompanyUser::setInformations(const string & info, const string & val) {
+    if (info == "sede legale") {
+        return setTaxOffice(val);
+    } else {
+        if (info == "sede operativa") {
+            return setOperationalHeadquarters(val);
+        } else {
+            if(info == "tipologia prodotti"){
+                return setProductType(val);
+            }
+        }
+    }
+    return false;
+}
