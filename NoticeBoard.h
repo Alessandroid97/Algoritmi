@@ -27,10 +27,11 @@ class NoticeBoard
 public:
     NoticeBoard();                          //Costruttore
 
-    void setText(string);                   //Setter
-    void setDate(Date d=Date());
-    void setLike(string);
-    void setDislike(string);
+    bool setText(const string);                   //Setter
+    void setDate(const Date d=Date());
+    bool setLike(const string);
+    bool setDislike(const string);
+    bool setID(const string);
 
     string getText();                       //Getter
     Date getDate();

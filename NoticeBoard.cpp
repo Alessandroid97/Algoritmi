@@ -20,25 +20,53 @@ NoticeBoard::NoticeBoard()
 }
 
 //Setters
-void NoticeBoard::setText(string text)
+bool NoticeBoard::setText(string text)
 {
-    _post._text=text;
+    if(text.length()<100) {
+        _post._text = text;
+        return true;
+    } else
+    {
+        return false;
+    }
 }
 void NoticeBoard::setDate(Date date)
 {
     _post._date=date;
 }
-void NoticeBoard::setLike(string id)
+bool NoticeBoard::setLike(string id)
 {
-    _post._userlike[_post._like]=id;
-    _post._like++;
+    if(id.length()<30) {
+        _post._userlike[_post._like] = id;
+        _post._like++;
+        return true;
+    } else
+    {
+        return false;
+    }
 }
-void NoticeBoard::setDislike(string id)
+bool NoticeBoard::setDislike(string id)
 {
-    _post._userdislike[_post._dislike]=id;
-    _post._dislike++;
+    if(id.length()<30) {
+        _post._userdislike[_post._dislike] = id;
+        _post._dislike++;
+        return true;
+    } else
+    {
+        return false;
+    }
 }
-
+bool NoticeBoard::setID(const string id)
+{
+    if(id.length()<30)
+    {
+        _post._id=id;
+        return true;
+    } else
+    {
+        return false;
+    }
+}
 //Getters
 string NoticeBoard::getText()
 {
@@ -264,122 +292,79 @@ void NoticeBoard::printall()
 //Carico bacheca da file
 bool NoticeBoard::pickupfromFile(string filename)
 {
-    ifstream file(filename);                      //Apro il file
-    if(file.is_open())                            //Controllo che sia aperto
+    string id,text,like,dislike,line;
+    Date date;
+    size_t to,from;
+    short control=0;
+    ifstream file(filename);
+    if(file.is_open())
     {
-        string text;
-        int i=0,v=0;
-        char c;
-        while(!file.eof())                        //Lo leggo
+        while(getline(file,line))
         {
-            file>>c;
-            if(c!=','&&i<=100)                    //Controllo virgole e caratteri di lunghezza massima
+            to=from=0;
+            to=line.find(',',from);
+            id=line.substr(from,to-from);
+            to=line.find('{',from);
+            to-=6;
+            from=to-10;
+            date.stringToDate(line.substr(from,to-from));
+            to=from-1;
+            from=0;
+            from=line.find(',',from);
+            text=line.substr(from+1,to-from+1);
+            from=to+18;
+            while(control!=1)
             {
-                text[i]=c;
-                i++;
-            }
-            else if(i>100)
-            {
-                cerr<<"Numero caratteri superato, impossibile caricare il file"<<endl;
-                return false;
-            }
-            else
-            {
-                if(v==0)                    //Utilizzo v come contatore per i campi del file
-                {                           //v=0 per id,1 per testo,2 per data,3 like,4 dislike
-                    _post._id=text;
-                    text.erase();
-                    i=0;
-                    v++;
-                }
-                else if(v==1)
+                to=line.find_first_of(",}",from);
+                if(line[to]==',')
                 {
-                    _post._text=text;
-                    text.erase();
-                    i=0;
-                    v++;
-                }
-                else if(v==2)
-                {
-                    _post._date.stringToDate(text);
-                    text.erase();
-                    i=0;
-                    v++;
-                }
-                else if(v==3)
-                {
-                    text.erase();
-                    for(int j=0;j<=5;j++)
-                    {
-                        file>>text[j];
-                        if(text!="like:{")
-                        {
-                            return false;
-                        }
-                    }
-                    text.erase();
-                    i=0;
-                    while(c!='}')
-                    {
-                        file>>c;
-                        if(c!=',')
-                        {
-                            text[i]=c;
-                            i++;
-                        }
-                        else
-                        {
-                            _post._userlike.push_back(text);
-                            text.erase();
-                            i=0;
-                        }
-                    }
-                    if(c=='}')
-                    {
-                        _post._like=_post._userlike.size();
-                        v++;
-                    }
-                }
-                else if(v==4)
-                {
-                    for(int j=0;j<8;j++)
-                    {
-                        file>>text[j];
-                    }
-                    if(text!="dislike:{")
+                    if(setLike(line.substr(from,to-from))) {
+                        from = to + 1;
+                    } else
                     {
                         return false;
                     }
-                    text.erase();
-                    i=0;
-                    while(c!='}') {
-                        file >> c;
-                        if (c != ',') {
-                            text[i] = c;
-                            i++;
-                        } else {
-                            _post._userdislike.push_back(text);
-                        }
-                    }
-                    if(c=='}')
-                    {
-                        _post._dislike=_post._userdislike.size();
-                        v=0;
-                        i=0;
-                        _board.insert(_board.begin(),_post);
-                    }
+                }
+                else if(line[to]=='}')
+                {
+                    control=1;
                 }
             }
+            control=0;
+            from=to+11;
+            while(control!=1)
+            {
+                to=line.find_first_of(",}",from);
+                if(line[to]==',')
+                {
+                    if(setDislike(line.substr(from,to-from))) {
+                        from = to + 1;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else if(line[to]=='}')
+                {
+                    control=1;
+                }
+            }
+            if(setID(id)&&setText(text))
+            {
+                savepost();
+            } else
+            {
+                return false;
+            }
         }
-        file.close();
-        cout<<"Database bacheca caricato con successo"<<endl;
-        return true;
     }
     else
     {
-        cerr<<"Errore nell'apertura del file"<<endl;
         return false;
     }
+    file.close();
+    return true;
 }
 
 //Stampo su file
