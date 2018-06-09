@@ -160,7 +160,7 @@ bool NoticeBoard::insertremoveDislike(const string id,const int n,const int c)
             return false;
         }
     }
-    else if(c==2)                           //Se c=2 rimuovo dislike
+    else if(c==2)                           //Se c=2 rimuovo il dislike
     {
         for (long i = 0; i < _board[n]._dislike; i++) {
             if (_board[n]._userdislike[i] == id) {

@@ -43,7 +43,7 @@ public:
     //Funsione inserisci/rimuovi dislike per utenti
     bool insertremoveDislike(const string,const int,const int);
 
-    //Funzione creazione nuovo post
+    //Funzione creazione nuovo post utenti
     bool insertPost(const string,const string);
 
     //Funzione modifica post
