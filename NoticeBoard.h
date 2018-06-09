@@ -12,7 +12,7 @@
 #include <fstream>
 using namespace std;
 
-struct newsStruct {
+struct postStruct {
     string _text;
     string _id;
     Date _date;
@@ -25,25 +25,51 @@ struct newsStruct {
 class NoticeBoard
 {
 public:
-    NoticeBoard();
-    void setText(string);
+    NoticeBoard();                          //Costruttore
+
+    void setText(string);                   //Setter
     void setDate(Date d=Date());
     void setLike(string);
     void setDislike(string);
-    string getText();
+
+    string getText();                       //Getter
     Date getDate();
     void getLike();
     void getDislike();
-    void searchpost(int);
-    void savepost();
+
+    //Funzione inserisci/rimuovi like per utenti
+    bool insertremoveLike(const string ,const int,const int);
+
+    //Funsione inserisci/rimuovi dislike per utenti
+    bool insertremoveDislike(const string,const int,const int);
+
+    //Funzione creazione nuovo post
+    bool insertPost(const string,const string);
+
+    //Funzione modifica post
+    bool modifypost(const string,const string,postStruct&);
+    //Cerca e seleziona post per modifiche
+    postStruct searchpost(int);
+
+    //Salva post in lavorazione
+    bool savepost();
+
+    //Stampa tutta la bacheca
     void printall();
+
+    //Stampa a 5 a 5 la bacheca
     int printpart(int);
+
+    //Carica bacheca da file
     bool pickupfromFile(string);
+
+    //Stampa e salva bacheca su file
     void printFile(string);
+
 private:
 
-    newsStruct _post;
-    vector<newsStruct> _board;
+    postStruct _post;
+    vector<postStruct> _board;
     int _postnumber;
 };
 
