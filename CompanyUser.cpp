@@ -81,3 +81,11 @@ bool CompanyUser::setInformations(const string & info, const string & val) {
     }
     return false;
 }
+
+void CompanyUser::printInfo() const {
+        cout<<endl<<"Nome azienda: "<<getID()
+            <<endl<<"Data fondazione: "<<getBirth().str()
+            <<endl<<"Sede legale: "<<getTaxOfficeAdress()
+            <<endl<<"Sede operativa: "<<getOperationaHeadquartersAdress()
+            <<endl<<"Tipologia di prodotti: "<<getProductType();
+}

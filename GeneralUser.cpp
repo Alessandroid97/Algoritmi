@@ -2,7 +2,7 @@
 
 GeneralUser::GeneralUser() {
     _type = 0 ;                            // 1-simple, 2-company, 3-group.
-    _id   = 0 ;
+    _id   = "0" ;
 }
 
 string GeneralUser::getID() const {

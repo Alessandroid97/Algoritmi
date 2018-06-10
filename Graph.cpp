@@ -44,15 +44,6 @@ bool Graph::readFileRelations(const string name_file) {
     }
 }
 
-template<typename T>
-void Graph::setUser(T &obj) {
-    _users_vector.insert(_users_vector.begin(), new T);      //Aggiungo un puntatore in testa al vector degli utenti e ci associo un utente di tipo T
-    _users_vector[0] = obj;                                  //che successivamente eguaglio all'utente passato come parametro.
-    _relations[0].insert(_relations[0].begin(), _empty_rel); //Aggiungo in testa al vector relazioni una struct relazioni vuota.
-    if(obj.getType()==S) _n_simple++;
-    else if(obj.getType()==A) _n_company++;                  //Incremento il contatore del tipo utente interessato.
-         else if(obj.getType()==G) _n_group++;
-}
 
 void Graph::removeUser(const string & userID) {
     for (unsigned long s = 0; s < _users_vector.size(); s++) {

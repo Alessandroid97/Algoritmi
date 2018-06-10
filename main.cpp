@@ -60,7 +60,9 @@ int main(int argc, char *argv[])
                           }
                       }
                   }
-              mainGraph.setUser(*objPtr);
+              if(type=="semplice" && line[frominfo]=='{') mainGraph.setUser(simple);
+              else if(type=="azienda" && line[frominfo]=='{') mainGraph.setUser(company);
+              else if(type=="gruppo" && line[frominfo]=='{') mainGraph.setUser(group);
           }
       }
 
