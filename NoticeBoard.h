@@ -27,10 +27,11 @@ class NoticeBoard
 public:
     NoticeBoard();                          //Costruttore
 
-    void setText(string);                   //Setter
-    void setDate(Date d=Date());
-    void setLike(string);
-    void setDislike(string);
+    bool setText(const string);                   //Setter
+    void setDate(const Date d=Date());
+    bool setLike(const string);
+    bool setDislike(const string);
+    bool setID(const string);
 
     string getText();                       //Getter
     Date getDate();
@@ -43,7 +44,7 @@ public:
     //Funsione inserisci/rimuovi dislike per utenti
     bool insertremoveDislike(const string,const int,const int);
 
-    //Funzione creazione nuovo post
+    //Funzione creazione nuovo post utenti
     bool insertPost(const string,const string);
 
     //Funzione modifica post
