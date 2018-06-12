@@ -35,3 +35,8 @@ bool GeneralUser::setID(const string &str) {
 
     return true;
 }
+
+void GeneralUser::setPrivatePost(postStruct *post)
+{
+    _private_post.insert(_private_post.begin(),post);
+}

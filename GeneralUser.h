@@ -20,6 +20,7 @@ public:
     bool setID(const string& );
     bool setBirth(const string& );                //Setters.
     bool setType(const short& );
+    void setPrivatePost(postStruct*);
 
     string getID() const;                         //Getters.
     Date getBirth() const;
@@ -30,7 +31,7 @@ private:
     string _id;                             //Identificativo univoco
     Date _birth;                            //Data di nascita dell'utente o di fondazione
     NoticeBoard _showcase;                  //Oggetto bacheca per la gestione delle notizioe dell'utente
-
+    vector<postStruct*> _private_post;
 };
 
 
