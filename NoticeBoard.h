@@ -10,6 +10,8 @@
 #include <vector>
 #include "Date.h"
 #include <fstream>
+#include "Graph.h"
+#include "GeneralUser.h"
 using namespace std;
 
 struct postStruct {
@@ -62,11 +64,23 @@ public:
     int printpart(int);
 
     //Carica bacheca da file
-    bool pickupfromFile(string);
+    bool pickupfromFile(string,Graph&);
 
     //Stampa e salva bacheca su file
     void printFile(string);
 
+    //Funzione ordina vettore
+    void order();
+
+    //Stampa notizia con il maggior numero di like
+    void printNicest();
+
+    //Stampa notizia con il maggior numero di dislike
+    void printWorst();
+
+    void searchPostbyDate(string);
+
+    bool deletePost(int,string);
 private:
 
     postStruct _post;

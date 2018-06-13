@@ -216,6 +216,7 @@ bool NoticeBoard::savepost()
         _board.insert(_board.begin(), _post);
         _postnumber++;
         _post=post._post;
+        order();
         return true;
     } else
     {
@@ -230,15 +231,19 @@ bool NoticeBoard::insertPost(const string id,const string text)
     _post._id=id;
     _post._text=text;
     _post._date=Date();
-    if(savepost())
+    return savepost();
+}
+bool NoticeBoard::deletePost(int i,string id)
+{
+    if(_board[i]._id==id)
     {
+        delete _board[i];
+        order();
         return true;
     }
-    else
-    {
-        return false;
-    }
+    return false;
 }
+
 bool NoticeBoard::modifypost(const string id,const string text, postStruct &post)
 {
      if(post._id==id)
@@ -290,20 +295,28 @@ void NoticeBoard::printall()
 }
 
 //Carico bacheca da file
-bool NoticeBoard::pickupfromFile(string filename)
+bool NoticeBoard::pickupfromFile(string filename,Graph &graph)
 {
     string id,text,like,dislike,line;
     Date date;
+    GeneralUser *ptr;
     size_t to,from;
     short control=0;
-    ifstream file(filename);
-    if(file.is_open())
+    ifstream file(filename);                    //Apro il file
+    if(file.is_open())                          //Controllo se il file è aperto
     {
         while(getline(file,line))
         {
             to=from=0;
             to=line.find(',',from);
             id=line.substr(from,to-from);
+            ptr=graph.getUser(id);              //Utilizzo grafo (dove sono contenuti
+                                                // gli oggetti utente) per controllare se l'utente del post
+                                                //esiste
+            if(ptr== nullptr)
+            {
+                return false;
+            }
             to=line.find('{',from);
             to-=6;
             from=to-10;
@@ -353,6 +366,9 @@ bool NoticeBoard::pickupfromFile(string filename)
             if(setID(id)&&setText(text))
             {
                 savepost();
+                ptr->setPrivatePost(&_board[0]);         //Utilizzo il puntatore salvato per richiamare
+                                                         //la funzione nella classe general user
+                                                         //per puntare i post che appartengono agli utenti
             } else
             {
                 return false;
@@ -405,3 +421,67 @@ void NoticeBoard::printFile(string filename)
     }
 }
 
+void NoticeBoard::order()
+{
+    postStruct p;
+    int k;
+    for(int i=0; i<_postnumber-1; i++)
+    {
+        k=i;
+        for(int j=i+1; j<_postnumber; j++)
+            if(_board[j]._date.yearsFrom() > _board[k]._date.yearsFrom())
+            {
+                k=j;
+            }
+        p=_board[k];
+        _board[k]=_board[i];
+        _board[i]=p;
+    }
+}
+
+void NoticeBoard::printNicest()
+{
+    long like=0;
+    int position=0;
+    for(int i=0;i<_postnumber;i++)
+    {
+        if(_board[i]._like>like)
+        {
+            like=_board[i]._like;
+            position=i;
+        }
+    }
+    cout<<_board[position]._id<<"\n"<<_board[position]._text<<"\n"<<_board[position]._date.str()
+        <<"\nLike: "<<_board[position]._like<<"  Dislike: "<<_board[position]._dislike<<endl;
+}
+
+void NoticeBoard::printWorst()
+{
+    long dislike=0;
+    int position=0;
+    for(int i=0;i<_postnumber;i++)
+    {
+        if(_board[i]._dislike>dislike)
+        {
+            dislike=_board[i]._dislike;
+            position=i;
+        }
+    }
+    cout<<_board[position]._id<<"\n"<<_board[position]._text<<"\n"<<_board[position]._date.str()
+        <<"\nLike: "<<_board[position]._like<<"  Dislike: "<<_board[position]._dislike<<endl;
+}
+
+void NoticeBoard::searchPostbyDate(string date)
+{
+    Date data;
+    data.stringToDate(date);
+    cout<<"Selezionare il post dalla sezione dedicata con il numero che gli è stato assegnato"<<endl;
+    for(int i=0;i<_postnumber;i++)
+    {
+        if(data.yearsFrom()==_board[i]._date.yearsFrom())
+        {
+            cout<<"\n("<<i+1<<")"<<"\n"<<_board[i]._id<<"\n"<<_board[i]._text<<"\n"<<_board[i]._date.str()
+                <<"\nLike: "<<_board[i]._like<<" Dislike: "<<_board[i]._dislike<<endl;
+        }
+    }
+}
