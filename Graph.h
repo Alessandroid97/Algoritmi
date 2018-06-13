@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 #include "Date.h"
 #include "GroupUser.h"
 
@@ -39,6 +40,9 @@ public:
     bool removeRelation(const string&, const string&);     //Rimuove la relazione fra 2 utenti.
 
     GeneralUser* getUser(const string&) const;              //Restituisce l'oggetto relativo all'identificativo passato come parametro.
+    long getPosUser(const string&) const;                   //Restituisce la posizione(indice del vector) dell'oggetto;
+
+    void searchGenealogicalTree(const string&);
 
     long numberOfUsers(const string&) const;               //Restituisce il numero totale degli utenti del tipo specificato
                                                      //come parametro("tutti","semplice","azienda","gruppo").
@@ -61,9 +65,15 @@ private:
                                                     //al vector esterno è associato un iteratore per scorrere il vettore (ogni indice di casella corrisponde ad un utente)
                                                     //mentre il vettore interno conterrà struct contenenti a loro volta la relazione e puntatore all'utente
                                                     //verso cui si esprime la relazione.
+
+    vector < long > _pos_user_tree;                 //Vector delle posizioni(indici del vector) dei componenti dell'albero genealogico.
+    vector < vector < long > >_sons_tree;           //Vector di vector per le posizioni dei figli dei componenti dell'albero genealogico.
+    queue <long> _Q;
+    vector<char> _color;
+    //vector<int> _levels;
+
     relationsStruct _empty_rel;
     relationsStruct _temporary_rel;
-    vector<char> _color;
 
     unsigned long _n_simple, _n_company, _n_group;
 };
@@ -71,11 +81,13 @@ private:
 
 template<typename T>
 void Graph::setUser(T &obj) {
-    _users_vector.insert(_users_vector.begin(), new T);      //Aggiungo un puntatore in testa al vector degli utenti e ci associo un utente di tipo T
-    *_users_vector[0] = obj;                                  //che successivamente eguaglio all'utente passato come parametro.
-    _relations[0].insert(_relations[0].begin(), _empty_rel); //Aggiungo in testa al vector relazioni una struct relazioni vuota.
+    _users_vector.push_back(new T);                                                              //Aggiungo un puntatore in coda al vector degli utenti e ci associo un utente di tipo T
+    *_users_vector[_users_vector.size()-1] = obj;                                                //che successivamente eguaglio all'utente passato come parametro.
+
+    _relations.resize(_relations.size()+1);
+    _relations[_relations.size()-1].insert(_relations[_relations.size()-1].begin(), _empty_rel); //Aggiungo in testa al vector relazioni una struct relazioni vuota.
     if(obj.getType()==S) _n_simple++;
-    else if(obj.getType()==A) _n_company++;                  //Incremento il contatore del tipo utente interessato.
+    else if(obj.getType()==A) _n_company++;                                                      //Incremento il contatore del tipo utente interessato.
     else if(obj.getType()==G) _n_group++;
 }
 

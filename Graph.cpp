@@ -111,7 +111,7 @@ bool Graph::removeRelation(const string &fromID, const string &toID) {
         if(_relations[from][r].ptr->getID()==toID){
             _relations[from].erase(_relations[from].begin()+r);
             for(int j=0; j<_relations[to].size(); j++){
-                if(_relations[to][j].ptr->getID()==toID){
+                if(_relations[to][j].ptr->getID()==fromID){
                     _relations[to].erase(_relations[to].begin()+j);
                     return true;
                 }
@@ -137,6 +137,16 @@ GeneralUser *Graph::getUser(const string& objID) const {
             return _users_vector[s];
         }
     }
+    return nullptr;
+}
+
+long Graph::getPosUser(const string &objID) const {
+    for (unsigned long s = 0; s < _users_vector.size(); s++) {
+        if (_users_vector[s]->getID() == objID) {
+            return s;
+        }
+    }
+    return -1;
 }
 
 long Graph::numberOfUsers(const string &type) const {
@@ -191,6 +201,36 @@ string Graph::userMoreRelations(const short& type_user, const string& type) cons
         }
     }
     return user_max;
+}
+
+void Graph::searchGenealogicalTree(const string & rootID) {
+    long n=getPosUser(rootID);                                                    //Assegno ad n la posizione (indice del vector) dell'utente da cui partire per l'albero
+    long s_pos;
+    if(n>-1){
+        _color.resize(_users_vector.size());                                      //Preparo il vector di controllo colori e la queue.
+        fill(_color.begin(), _color.end(), 'W');
+        _color[n]='G';
+        _Q.push(n);
+
+        while(!_Q.empty()){                                                       //Inizio a visitare i nodi(utenti) presenti nella queue.
+            n=_Q.front();
+            _Q.pop();
+            _pos_user_tree.push_back(n);                                          //Inserisco l'indice dell'utente che visito nel vector degli utenti per l'albero
+            _sons_tree.resize(_sons_tree.size()+1);                               //e incremento di 1 la dimensione del vector di vector per i figli.
+
+            for(long v=0; v<_relations[n].size(); v++){                           //Visito tutti i figli dell'utente.
+                if(_relations[n][v].link == "figlio"){
+                    s_pos=getPosUser(_relations[n][v].ptr->getID());
+                    if(_color[s_pos]=='W'){
+                        _color[s_pos]='G';
+                        _sons_tree[_sons_tree.size()-1].push_back(s_pos);         //Inserisco la posizione del figlio nel vector di figli relativo all'utente.
+                        _Q.push(s_pos);                                           //Inserisco il figlio dell'utente nella queue.
+                    }
+                }
+            }
+            _color[n] = 'B';
+        }
+    }
 }
 
 
