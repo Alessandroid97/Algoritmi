@@ -25,13 +25,14 @@ public:
     string getID() const;                         //Getters.
     Date getBirth() const;
     short getType() const;
+    int getNumberNews() const;
 
 private:
     short _type;                            // 1-simple, 2-company, 3-group.
     string _id;                             //Identificativo univoco
     Date _birth;                            //Data di nascita dell'utente o di fondazione
-    NoticeBoard _showcase;                  //Oggetto bacheca per la gestione delle notizioe dell'utente
     vector<postStruct*> _private_post;
+    int _news_number;
 };
 
 

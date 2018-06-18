@@ -79,11 +79,11 @@ bool Graph::setRelation(string & fromID, string &toID, string &rel) {
                     invertRelation(from, to, rel, inv_rel );
                     return true;
                 } else {
-                    if (rel == "coniuge" || rel == "amico") {
+                    if (rel == "coniuge" || rel == "amico" || rel == "dipendente" || rel == "membro") {
                         invertRelation(from, to, rel, rel);
                         return true;
                     } else{
-                        if(rel == "conoscente" || rel == "membro" || rel == "dipendente"){
+                        if(rel == "conoscente"){
                             _temporary_rel.link = rel;
                             _temporary_rel.ptr = _users_vector[to];
                             _relations[from].insert(_relations[from].begin(), _temporary_rel);
@@ -229,6 +229,33 @@ void Graph::searchGenealogicalTree(const string & rootID) {
                 }
             }
             _color[n] = 'B';
+        }
+    }else{
+        cerr<<"\r\nErrore, utente non trovato.";
+    }
+}
+
+bool Graph::searchLoneWolf(const int rel, const int news, const short group, const short employee) {
+    _searchList.clear();
+    short check;
+    for (unsigned long s = 0; s < _users_vector.size(); s++) {
+        check=0;
+        if(_users_vector[s]->getType()==S){
+            if(rel>0){
+                if(_users_vector[s]->getNumberRelations("tutti")>rel) check = -1 ;
+            }
+            if(news>0){
+                if(_users_vector[s]->getNumberNews()>news) check = -1;
+            }
+            if(group>0){
+                if(_users_vector[s]->getNumberRelations("gruppi")>group) check = -1;
+            }
+            if(employee>0){
+                if(_users_vector[s]->getNumberRelations("dipendenti")>group) check = -1;
+            }
+            if(check==0){
+                _searchList.push_back(getPosUser(_users_vector[s]->getID()));
+            }
         }
     }
 }

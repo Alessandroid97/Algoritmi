@@ -40,3 +40,7 @@ void GeneralUser::setPrivatePost(postStruct *post)
 {
     _private_post.insert(_private_post.begin(),post);
 }
+
+int GeneralUser::getNumberNews() const {
+    return _news_number;
+}

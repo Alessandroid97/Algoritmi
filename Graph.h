@@ -52,6 +52,8 @@ public:
                                                              //il tipo dell'utente è mandato come parametro(1-2-3).
     float averageAgeSimpleUsers() const;            //Restituisce l'età media degli utenti semplici.
 
+    bool searchLoneWolf(int, int, short, short);    //Parametri per la ricerca, in ordine: soglia num relazioni, soglia num news, appartenenza gruppi, dipendente azienda.
+
 private:
 
     void invertRelation(const long&,const long&,const string&,const string&);
@@ -71,6 +73,8 @@ private:
     queue <long> _Q;
     vector<char> _color;
     //vector<int> _levels;
+
+    vector <long> _searchList;             //Può essere sostituito dal vector _pos_user_tree già esistente.
 
     relationsStruct _empty_rel;
     relationsStruct _temporary_rel;

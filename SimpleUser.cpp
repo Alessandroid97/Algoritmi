@@ -34,6 +34,9 @@ int SimpleUser::getNumberRelations(const string & type) const {
     if(type=="amici") return getNFriends();
     if(type=="conoscenti") return getNKnown();
     if(type=="parenti") return getNRelatives();
+    if(type=="gruppi") return _n_groups;
+    if(type=="dipendenti") return _n_company;
+    if(type=="tutti") return getNRelatives() + getNFriends() + getNKnown() + _n_groups;
 }
 //Setters
 bool SimpleUser::setAddress(const string &addr) {
@@ -96,3 +99,4 @@ bool SimpleUser::setInformations(const string & info, const string & val) {
     return false;
 
 }
+

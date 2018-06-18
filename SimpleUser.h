@@ -21,7 +21,7 @@ public:
     void increaseFriends();
     void increaseKnown();
 
-    string getName() const;
+    string getName() const;                     //Possono essere sostituiti tutti e 3 da getNumberRelations.
     string getSurname() const;
     string getAddress() const;
     int getNRelatives() const;
@@ -42,6 +42,8 @@ private:
     int _n_friends;
     int _n_relatives;
     int _n_known;
+    int _n_groups;
+    int _n_company;
 };
 
 
