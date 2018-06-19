@@ -56,7 +56,7 @@ public:
 
 private:
 
-    void invertRelation(const long&,const long&,const string&,const string&);
+    void invertRelation(vector < vector <relationsStruct> >& ,const long&,const long&,const string&,const string&);
 
 
     vector < GeneralUser* > _users_vector;          //Vector di puntatori della classe base, ai quali è possibile associare ognuno dei 3 tipi
@@ -69,7 +69,7 @@ private:
                                                     //verso cui si esprime la relazione.
 
     vector < long > _pos_user_tree;                 //Vector delle posizioni(indici del vector) dei componenti dell'albero genealogico.
-    vector < vector < long > >_sons_tree;           //Vector di vector per le posizioni dei figli dei componenti dell'albero genealogico.
+    vector < vector <relationsStruct> >_relations_tree;           //Vector di vector per le posizioni dei figli dei componenti dell'albero genealogico.
     queue <long> _Q;
     vector<char> _color;
     //vector<int> _levels;

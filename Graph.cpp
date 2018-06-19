@@ -71,19 +71,19 @@ bool Graph::setRelation(string & fromID, string &toID, string &rel) {
         if (from > -1 && to > -1 && from!=to) {
             if (rel == "figlio") {
                 inv_rel="genitore";
-                invertRelation(from, to, rel, inv_rel);
+                invertRelation(_relations, from, to, rel, inv_rel);
                 return true;
             } else {
                 if (rel == "genitore") {
                     inv_rel="figlio";
-                    invertRelation(from, to, rel, inv_rel );
+                    invertRelation(_relations ,from, to, rel, inv_rel );
                     return true;
                 } else {
                     if (rel == "coniuge" || rel == "amico" || rel == "dipendente" || rel == "membro") {
-                        invertRelation(from, to, rel, rel);
+                        invertRelation(_relations ,from, to, rel, rel);
                         return true;
                     } else{
-                        if(rel == "conoscente"){
+                        if(rel == "conoscente" || rel == "consociata"){
                             _temporary_rel.link = rel;
                             _temporary_rel.ptr = _users_vector[to];
                             _relations[from].insert(_relations[from].begin(), _temporary_rel);
@@ -122,13 +122,13 @@ bool Graph::removeRelation(const string &fromID, const string &toID) {
 }
 
 
-void Graph::invertRelation(const long &from , const long &to, const string &rel, const string &inv_rel) {
+void Graph::invertRelation(vector < vector <relationsStruct> > &Rvector, const long &from , const long &to, const string &rel, const string &inv_rel) {
     _temporary_rel.link = rel;
     _temporary_rel.ptr = _users_vector[to];
-    _relations[from].insert(_relations[from].begin(), _temporary_rel);
+    Rvector[from].insert(Rvector[from].begin(), _temporary_rel);
     _temporary_rel.ptr = _users_vector[from];
     _temporary_rel.link = inv_rel;
-    _relations[to].insert(_relations[to].begin(), _temporary_rel);
+    Rvector[to].insert(Rvector[to].begin(), _temporary_rel);
 }
 
 GeneralUser *Graph::getUser(const string& objID) const {
@@ -216,15 +216,24 @@ void Graph::searchGenealogicalTree(const string & rootID) {
             n=_Q.front();
             _Q.pop();
             _pos_user_tree.push_back(n);                                          //Inserisco l'indice dell'utente che visito nel vector degli utenti per l'albero
-            _sons_tree.resize(_sons_tree.size()+1);                               //e incremento di 1 la dimensione del vector di vector per i figli.
+            _relations_tree.resize(_relations_tree.size()+1);                               //e incremento di 1 la dimensione del vector di vector per i parenti.
 
-            for(long v=0; v<_relations[n].size(); v++){                           //Visito tutti i figli dell'utente.
+            for(long v=0; v<_relations[n].size(); v++){                           //Visito tutti i parenti dell'utente.
                 if(_relations[n][v].link == "figlio"){
                     s_pos=getPosUser(_relations[n][v].ptr->getID());
                     if(_color[s_pos]=='W'){
                         _color[s_pos]='G';
-                        _sons_tree[_sons_tree.size()-1].push_back(s_pos);         //Inserisco la posizione del figlio nel vector di figli relativo all'utente.
-                        _Q.push(s_pos);                                           //Inserisco il figlio dell'utente nella queue.
+                        invertRelation(_relations_tree, _relations_tree.size()-1, s_pos, "figlio", "genitore");         //Inserisco le relazioni nel vector _relations_tree.
+                        _Q.push(s_pos);                                                                                 //Inserisco il figlio dell'utente nella queue.
+                    }
+                }else{
+                    if(_relations[n][v].link == "genitore") {
+                        s_pos = getPosUser(_relations[n][v].ptr->getID());
+                        if (_color[s_pos] == 'W') {
+                            _color[s_pos] = 'G';
+                            invertRelation(_relations_tree, _relations_tree.size() - 1, s_pos, "genitore", "figlio");         //Inserisco le relazioni nel vector _relations_tree.
+                            _Q.push(s_pos);                                                                                   //Inserisco il genirote dell'utente nella queue.
+                        }
                     }
                 }
             }
