@@ -49,6 +49,11 @@ bool SimpleUser::setAddress(const string &addr) {
 
     return true;
 }
+
+bool SimpleUser::setIsEmployed(const bool &employed) {
+    _is_employed = employed;
+}
+
 bool SimpleUser::setName(const string &name) {
     if (name.length() <= MAX_STRING && checkAlpha(name))
         _name = name;
