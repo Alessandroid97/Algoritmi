@@ -30,15 +30,18 @@ int SimpleUser::getNKnown() const {
 int SimpleUser::getNRelatives() const {
     return _n_relatives;
 }
+bool SimpleUser::getIsEmployed() const {
+    return _is_employed;
+}
+
 int SimpleUser::getNumberRelations(const string & type) const {
     if(type=="amici") return getNFriends();
     if(type=="conoscenti") return getNKnown();
     if(type=="parenti") return getNRelatives();
     if(type=="gruppi") return _n_groups;
-    if(type=="dipendenti") return _n_company;
     if(type=="tutti") return getNRelatives() + getNFriends() + getNKnown() + _n_groups;
 }
-//Setters
+//Setters-
 bool SimpleUser::setAddress(const string &addr) {
     if (addr.length() <= MAX_STRING)
         _address = addr;
@@ -46,6 +49,11 @@ bool SimpleUser::setAddress(const string &addr) {
 
     return true;
 }
+
+bool SimpleUser::setIsEmployed(const bool &employed) {
+    _is_employed = employed;
+}
+
 bool SimpleUser::setName(const string &name) {
     if (name.length() <= MAX_STRING && checkAlpha(name))
         _name = name;
@@ -76,7 +84,7 @@ string SimpleUser::printOnFile() const {
 }
 
 //Private Methods
-bool SimpleUser::checkAlpha(const string & str) {
+bool SimpleUser::checkAlpha(const string &str) {
     for (int i=0; i<str.length(); i++)
     {
         if (!isalpha(str[i])) return false;
@@ -85,17 +93,14 @@ bool SimpleUser::checkAlpha(const string & str) {
 }
 
 bool SimpleUser::setInformations(const string & info, const string & val) {
-    if (info == "nome") {
+
+    if (info == "nome")
         return setName(val);
-    } else {
-        if (info == "cognome") {
-            return setSurname(val);
-        } else {
-            if(info == "residenza"){
-                return setAddress(val);
-            }
-        }
-    }
+    else if  (info == "cognome")
+        return setSurname(val);
+    else if(info == "residenza")
+        return setAddress(val);
+
     return false;
 
 }

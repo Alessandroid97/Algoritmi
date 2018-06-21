@@ -260,7 +260,7 @@ bool Graph::searchLoneWolf(const int rel, const int news, const short group, boo
                 if(_users_vector[s]->getNumberRelations("gruppi")>employee) check = -1;
             }
             if(employee>0){
-                if(_users_vector[s]->getNumberRelations("dipendenti")>group) check = -1;
+                if(_users_vector[s]->getNumberRelations("dipendenti")>employee) check = -1;
             }
             if(check==0){
                 _searchList.push_back(getPosUser(_users_vector[s]->getID()));
