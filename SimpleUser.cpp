@@ -41,7 +41,7 @@ int SimpleUser::getNumberRelations(const string & type) const {
     if(type=="gruppi") return _n_groups;
     if(type=="tutti") return getNRelatives() + getNFriends() + getNKnown() + _n_groups;
 }
-//Setters
+//Setters-
 bool SimpleUser::setAddress(const string &addr) {
     if (addr.length() <= MAX_STRING)
         _address = addr;
