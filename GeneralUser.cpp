@@ -44,3 +44,8 @@ void GeneralUser::setPrivatePost(postStruct *post)
 int GeneralUser::getNumberNews() const {
     return _news_number;
 }
+
+vector<postStruct*> GeneralUser::getPrivatePost() const
+{
+    return _private_post;
+}

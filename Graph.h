@@ -17,7 +17,10 @@
 #define G 3
 
 using namespace std;
-
+typedef struct sympathystruct{
+    string name;
+    float rate;
+}sympathystruct;
 typedef struct relationsStruct{
     GeneralUser *ptr;                   //SOLO UNA PRIMA IDEA - Puntatore a un puntatore, punta al puntatore del
                                          //vector _users_vector che a sua volta punta all'oggetto.
@@ -52,8 +55,9 @@ public:
                                                              //il tipo dell'utente è mandato come parametro(1-2-3).
     float averageAgeSimpleUsers() const;            //Restituisce l'età media degli utenti semplici.
 
-    bool searchLoneWolf(int, int, short, short);    //Parametri per la ricerca, in ordine: soglia num relazioni, soglia num news, appartenenza gruppi, dipendente azienda.
+    bool searchLoneWolf(int, int, short, bool);    //Parametri per la ricerca, in ordine: soglia num relazioni, soglia num news, appartenenza gruppi, dipendente azienda.
 
+    bool searchSympathy(const int, bool);
 private:
 
     void invertRelation(vector < vector <relationsStruct> >& ,const long&,const long&,const string&,const string&);

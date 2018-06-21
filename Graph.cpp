@@ -34,7 +34,7 @@ bool Graph::readFileRelations(const string name_file) {
             id2=line.substr(from, to-from);
             from=to+1;
             relation=line.substr(from, line.size()-from);
-            if(setRelation(id1, id2, relation)){
+            if(setRelation(id1, id2, relation)) {
             }
             else {
                 return false;
@@ -244,7 +244,7 @@ void Graph::searchGenealogicalTree(const string & rootID) {
     }
 }
 
-bool Graph::searchLoneWolf(const int rel, const int news, const short group, const short employee) {
+bool Graph::searchLoneWolf(const int rel, const int news, const short group, bool employee) {
     _searchList.clear();
     short check;
     for (unsigned long s = 0; s < _users_vector.size(); s++) {
@@ -257,7 +257,7 @@ bool Graph::searchLoneWolf(const int rel, const int news, const short group, con
                 if(_users_vector[s]->getNumberNews()>news) check = -1;
             }
             if(group>0){
-                if(_users_vector[s]->getNumberRelations("gruppi")>group) check = -1;
+                if(_users_vector[s]->getNumberRelations("gruppi")>employee) check = -1;
             }
             if(employee>0){
                 if(_users_vector[s]->getNumberRelations("dipendenti")>group) check = -1;
@@ -269,5 +269,58 @@ bool Graph::searchLoneWolf(const int rel, const int news, const short group, con
     }
 }
 
-
-
+bool Graph::searchSympathy(const int rate, bool subs)
+{
+    vector<postStruct*> post;
+    vector<sympathystruct> sympathy;
+    sympathystruct company;
+    short check;
+    for(unsigned long i=0;i<_users_vector.size();i++)
+    {
+        check=0;
+        if(_users_vector[i]->getType()==A) {
+            company.name=_users_vector[i]->getID();
+            post=_users_vector[i]->getPrivatePost();
+            long like=0;
+            long dislike=0;
+            for(unsigned long j=0;j<post.size();j++)
+            {
+                like=like+post[j]->_like;
+                dislike=dislike+post[j]->_dislike;
+            }
+            if(dislike!=0&&(like/dislike)>=rate) {
+                company.rate=like/dislike;
+                sympathy.push_back(company);
+            }
+            else if(like>rate)
+            {
+                company.rate=like;
+                sympathy.push_back(company);
+            }
+        }
+    }
+    if(!sympathy.empty()) {
+        sympathystruct s;
+        int k;
+        for(unsigned int i=0;i<sympathy.size()-1;i++)
+        {
+            k=i;
+            for(int j=i+1; j<sympathy.size(); j++)
+                    if(sympathy[i].rate > sympathy[k].rate)
+                    {
+                        k=j;
+                    }
+                s=sympathy[k];
+                sympathy[k]=sympathy[i];
+                sympathy[i]=s;
+            }
+        }
+        else{
+        return false;
+    }
+    for(unsigned int i=0;i<sympathy.size();i++)
+    {
+        cout<<"["<<i<<"]\n"<<sympathy[i].name<<"\nCon rateo di : "<<sympathy[i].rate<<endl;
+    }
+    return true;
+    }

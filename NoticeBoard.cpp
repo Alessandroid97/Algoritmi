@@ -216,7 +216,6 @@ bool NoticeBoard::savepost()
         _board.insert(_board.begin(), _post);
         _postnumber++;
         _post=post._post;
-        order();
         return true;
     } else
     {

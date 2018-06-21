@@ -26,6 +26,7 @@ public:
     Date getBirth() const;
     short getType() const;
     int getNumberNews() const;
+    vector<postStruct*> getPrivatePost() const;
 
 private:
     short _type;                            // 1-simple, 2-company, 3-group.
