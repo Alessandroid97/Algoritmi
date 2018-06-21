@@ -79,7 +79,7 @@ string SimpleUser::printOnFile() const {
 }
 
 //Private Methods
-bool SimpleUser::checkAlpha(const string & str) {
+bool SimpleUser::checkAlpha(const string &str) {
     for (int i=0; i<str.length(); i++)
     {
         if (!isalpha(str[i])) return false;
@@ -88,17 +88,14 @@ bool SimpleUser::checkAlpha(const string & str) {
 }
 
 bool SimpleUser::setInformations(const string & info, const string & val) {
-    if (info == "nome") {
+
+    if (info == "nome")
         return setName(val);
-    } else {
-        if (info == "cognome") {
-            return setSurname(val);
-        } else {
-            if(info == "residenza"){
-                return setAddress(val);
-            }
-        }
-    }
+    else if  (info == "cognome")
+        return setSurname(val);
+    else if(info == "residenza")
+        return setAddress(val);
+
     return false;
 
 }

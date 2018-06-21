@@ -17,6 +17,7 @@ public:
     bool setName(const string& name);           //devo controllare il nome, deve essere una stringa letterale di MAX car.
     bool setSurname(const string& surname);
     bool setAddress(const string& address);
+    bool setIsEmployed(const bool& employed);
     void increaseRelatives();                   //>=0 si devono incrementare
     void increaseFriends();
     void increaseKnown();
