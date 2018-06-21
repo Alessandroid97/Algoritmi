@@ -27,6 +27,7 @@ public:
     int getNRelatives() const;
     int getNKnown() const;
     int getNFriends() const;
+    bool getIsEmployed() const;
 
     virtual int getNumberRelations(const string&) const;
     virtual string printOnFile() const;
@@ -43,7 +44,8 @@ private:
     int _n_relatives;
     int _n_known;
     int _n_groups;
-    int _n_company;
+    bool _is_employed;
+
 };
 
 
